@@ -6,7 +6,7 @@ class SpringerManager:
         self.springerList = []
 
         self.newWeighBallState = WeighBallState.RIGHT
-        self.ifBounce = False
+        self.springExtended = True
 
 
     def addSpringer(self, springer):
@@ -15,9 +15,17 @@ class SpringerManager:
     def moveSpringers(self):
         for springer in self.springerList:
             if springer.controllable:
-                springer.reactToCommands(self.newWeighBallState, self.ifBounce)
+                springer.changeBallState(self.newWeighBallState)
+
+                if self.springExtended:
+                    springer.extendSpring()
+                else:
+                    springer.shortenSpring()
+
             springer.move()
 
-    def updateControlls(self, newWeighBallState, ifBounce):
+    def changeBallState(self, newWeighBallState):
         self.newWeighBallState = newWeighBallState
-        self.ifBounce = ifBounce
+
+    def changeSpringState(self, springExtended):
+        self.springExtended = springExtended

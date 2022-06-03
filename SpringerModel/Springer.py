@@ -14,6 +14,7 @@ class WeighBallState(Enum):
 
 class Springer:
     def __init__(self, head, foot, floorHeight):
+        self.springExtended = True
         self.controllable = False
         self.head = head
         self.foot = foot
@@ -26,7 +27,7 @@ class Springer:
         self.weightBallLength = 0.3  # given as percentage of whole length
         self.weighBallAngle = 3.1415 / 4
 
-    def reactToCommands(self, newWeighBallState, ifBounce):
+    def changeBallState(self, newWeighBallState):
         self.weightBallState = newWeighBallState
 
     def calculateCenterMass(self, points):
@@ -41,7 +42,11 @@ class Springer:
         return Point(x, y)
 
     def getBallPosition(self):
-        middleBallPosition = self.foot + (self.head - self.foot) * (1 - self.weightBallLength)
+        if self.springExtended:
+            middleBallPosition = self.head + (self.foot - self.head) * self.weightBallLength
+        else:
+            middleBallPosition = self.head + (self.foot - self.head) * self.weightBallLength * 2
+
         if self.weightBallState == WeighBallState.LEFT:
             return rotatePointAroundPoint(middleBallPosition, self.head, self.weighBallAngle)
         if self.weightBallState == WeighBallState.MIDDLE:
@@ -75,6 +80,23 @@ class Springer:
             self.head.vy = 0
             self.head.vx = 0
             self.transferFootMomentumWhenHeadLands()
+
+    def shortenSpring(self):
+        if self.springExtended:
+            newFoot = (self.head + self.foot) * 0.5
+            newFoot.vx = self.foot.vx
+            newFoot.vy = self.foot.vy
+            self.foot = newFoot
+            self.springExtended = False
+
+    def extendSpring(self):
+        if not self.springExtended:
+            newFoot = self.foot + (self.foot - self.head)
+            newFoot.vx = self.foot.vx
+            newFoot.vy = self.foot.vy
+            self.foot = newFoot
+            self.springExtended = True
+
 
     def moveHeadAroundFoot(self):
         alpha = threePointAngle(self.head + self.head.getSpeedVector(), self.foot, self.head)
