@@ -2,8 +2,8 @@ from enum import Enum
 from math import pi, sin
 
 from Utility.Point import Point
-from Utility.Settings import GRAVITY_ACCELERATION, COLLISION_EPSILON, FLOOR_HEIGHT, RES_Y
-from Utility.EuclidianFunctions import rotatePointAroundPoint, threePointAngle
+from Utility.Settings import GRAVITY_ACCELERATION, COLLISION_EPSILON, FLOOR_HEIGHT, RES_Y, BOUNCE_COEFFICIENT
+from Utility.EuclidianFunctions import rotatePointAroundPoint, threePointAngle, twoLineIntersection
 
 
 class WeighBallState(Enum):
@@ -25,7 +25,7 @@ class Springer:
 
         self.floorHeight = floorHeight
         self.weightBallLength = 0.3  # given as percentage of whole length
-        self.weighBallAngle = 3.1415 / 4
+        self.weighBallAngle = pi / 4
 
     def changeBallState(self, newWeighBallState):
         self.weightBallState = newWeighBallState
@@ -57,7 +57,7 @@ class Springer:
     def move(self):
         self.checkGround()
         if self.footLanded and not self.headLanded:
-            self.head.vy += GRAVITY_ACCELERATION
+            self.head.vy += GRAVITY_ACCELERATION # TODO: INCLUDE HOW GRAVITY AFFECTS WEIGHT BALL
             self.moveHeadAroundFoot()
         if not self.footLanded and self.headLanded:
             self.foot.vy += GRAVITY_ACCELERATION
@@ -97,6 +97,23 @@ class Springer:
             self.foot = newFoot
             self.springExtended = True
 
+            if abs(self.foot.y - (RES_Y - FLOOR_HEIGHT)) <= COLLISION_EPSILON or self.foot.y > RES_Y - FLOOR_HEIGHT:
+                self.bounce()
+
+    def bounce(self):
+        contactPoint = twoLineIntersection(self.head, self.foot, Point(0, RES_Y - FLOOR_HEIGHT), Point(10, RES_Y - FLOOR_HEIGHT))
+        translationVector = (contactPoint - self.foot) * 1.1
+        self.foot = self.foot + translationVector
+        self.head = self.head + translationVector
+
+        translationVector = translationVector * BOUNCE_COEFFICIENT
+        self.foot.vx += translationVector.x
+        self.foot.vy += translationVector.y
+        self.head.vx += translationVector.x
+        self.head.vy += translationVector.y
+
+        self.footLanded = False
+        self.headLanded = False
 
     def moveHeadAroundFoot(self):
         alpha = threePointAngle(self.head + self.head.getSpeedVector(), self.foot, self.head)
