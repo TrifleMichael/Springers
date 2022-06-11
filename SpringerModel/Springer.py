@@ -10,10 +10,20 @@ class WeighBallState(Enum):
     LEFT = 1
     MIDDLE = 2
     RIGHT = 3
+    DEFAULT = 4
+
+
+class SpringState(Enum):
+    EXTENDED = 1
+    RETRACTED = 2
+    DEFAULT = 3
 
 
 class Springer:
     def __init__(self, head, foot, floorHeight):
+
+        self.genome = ["D", "N", "A"]
+
         self.springExtended = True
         self.controllable = False
         self.head = head

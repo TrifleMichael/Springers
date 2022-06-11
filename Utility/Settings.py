@@ -1,4 +1,16 @@
-FRAME_TIME = 0.018
+from Utility.Point import Point
+
+PLAYER_CONTROL = False
+# Wybor pomiedzy sterowaniem przez gracza a sterowaniem przez czarna skrzynke
+
+TIME_LIMIT = 300
+# Ile klatek ma trwac jedna generacja Springerow.
+# Po tym czasie powinno dochodzic do rekombinacji genomu i utworzenia nowych Springerow
+
+STARTING_HEAD, START_FOOT = Point(100, 100), Point(50, 200)
+# Poczatkowa pozycja springera zaraz po utworzeniu
+
+FRAME_TIME = 1/70
 RES_X = 800
 RES_Y = 600
 GRAVITY_ACCELERATION = 0.1

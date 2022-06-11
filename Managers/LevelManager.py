@@ -10,12 +10,14 @@ class LevelManager:
         self.display = display
         self.springerManager = SpringerManager()
         self.drawManager = DrawManager(display)
+        self.timeFromStart = 0
 
     def draw(self):
         self.drawManager.draw()
 
     def iterate(self):
         self.springerManager.moveSpringers()
+        self.timeFromStart += 1
 
     def addSpringer(self, head, foot):
         springer = Springer(head, foot, FLOOR_HEIGHT)
@@ -24,8 +26,9 @@ class LevelManager:
         self.drawManager.addSpringerSprite(springerSprite)
         self.springerManager.addSpringer(springer)
 
-    def addControllableSpringer(self, head, foot):
+    def addControllableSpringer(self, head, foot, genome):
         springer = Springer(head, foot, FLOOR_HEIGHT)
+        springer.genome = genome
         springer.controllable = True
         springerSprite = SpringerSprite(springer, self.display)
 
