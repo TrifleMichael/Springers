@@ -1,6 +1,6 @@
 from Utility.Point import Point
 
-PLAYER_CONTROL = False
+PLAYER_CONTROL = True
 # Wybor pomiedzy sterowaniem przez gracza a sterowaniem przez czarna skrzynke
 
 TIME_LIMIT = 300
