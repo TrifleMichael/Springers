@@ -1,5 +1,6 @@
 from enum import Enum
 from math import pi, sin
+import random as rd
 
 from Utility.Point import Point
 from Utility.Settings import GRAVITY_ACCELERATION, COLLISION_EPSILON, FLOOR_HEIGHT, RES_Y, BOUNCE_COEFFICIENT
@@ -22,7 +23,7 @@ class SpringState(Enum):
 class Springer:
     def __init__(self, head, foot, floorHeight):
 
-        self.genome = ["D", "N", "A"]
+        self.genome = None
 
         self.springExtended = True
         self.controllable = False
