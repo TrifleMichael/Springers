@@ -10,6 +10,19 @@ DISPLAY = pygame.display.set_mode((RES_X, RES_Y))
 levelManager = LevelManager(DISPLAY)
 BLACK_BOX = BlackBox(levelManager.springerManager, levelManager)
 
+def interpretKeyboardInput(levelManager):
+    if PLAYER_CONTROL:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a]:
+            levelManager.springerManager.changeBallState(WeighBallState.LEFT)
+        if keys[pygame.K_s]:
+            levelManager.springerManager.changeBallState(WeighBallState.MIDDLE)
+        if keys[pygame.K_d]:
+            levelManager.springerManager.changeBallState(WeighBallState.RIGHT)
+        if keys[pygame.K_q]:
+            levelManager.springerManager.springState = SpringState.RETRACTED
+        if keys[pygame.K_e]:
+            levelManager.springerManager.springState = SpringState.EXTENDED
 
 def mainLoop():
     pygame.display.set_caption("Springers Simulation")
@@ -30,18 +43,7 @@ def mainLoop():
             if event.type == pygame.QUIT:
                 RUN = False
 
-            if PLAYER_CONTROL:
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_a:
-                        levelManager.springerManager.changeBallState(WeighBallState.LEFT)
-                    if event.key == pygame.K_s:
-                        levelManager.springerManager.changeBallState(WeighBallState.MIDDLE)
-                    if event.key == pygame.K_d:
-                        levelManager.springerManager.changeBallState(WeighBallState.RIGHT)
-                    if event.key == pygame.K_q:
-                        levelManager.springerManager.springState = SpringState.RETRACTED
-                    if event.key == pygame.K_e:
-                        levelManager.springerManager.springState = SpringState.EXTENDED
+        interpretKeyboardInput(levelManager)
 
         if not PLAYER_CONTROL:
             BLACK_BOX.iterate()
