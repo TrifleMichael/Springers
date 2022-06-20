@@ -33,7 +33,8 @@ class BlackBox:
         newGenomes = []
         for springer1 in self.springerManager.springerList:
             for springer2 in self.springerManager.springerList:
-                pass
+                if springer1 is not springer2:
+                    pass
                 # TODO: Dodawac nowe genomy na podstawie genomow powyzszych Springerow (springer1.genome i springer2.genome)
                 # TODO: Jako metryka dopasowania starego genotypu moze przydac sie getSpringerSuccessMetric(), aktualnie to po prostu kwadrat odleglosci przebytej
                 # TODO: Ta funkcja uruchamia sie regularnie co TIME_LIMIT (zdefiniowany w Settings, aktualnie ok 5 sekund).
