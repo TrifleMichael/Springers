@@ -1,6 +1,6 @@
 from Utility.Point import Point
 
-PLAYER_CONTROL = False
+PLAYER_CONTROL = True
 # Wybor pomiedzy sterowaniem przez gracza a sterowaniem przez czarna skrzynke
 
 TIME_LIMIT = 300
@@ -9,6 +9,9 @@ TIME_LIMIT = 300
 
 STARTING_HEAD, START_FOOT = Point(100, 100), Point(50, 200)
 # Poczatkowa pozycja springera zaraz po utworzeniu
+
+HEADLESS_MODE = False
+# Tryb bez okna graficznego
 
 FRAME_TIME = 1/70
 RES_X = 800

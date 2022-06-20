@@ -6,7 +6,10 @@ from SpringerModel.Springer import WeighBallState, SpringState
 from Utility.BlackBox import BlackBox
 from Utility.Settings import *
 
-DISPLAY = pygame.display.set_mode((RES_X, RES_Y))
+if not HEADLESS_MODE:
+    DISPLAY = pygame.display.set_mode((RES_X, RES_Y))
+else:
+    DISPLAY = None
 levelManager = LevelManager(DISPLAY)
 BLACK_BOX = BlackBox(levelManager.springerManager, levelManager)
 
@@ -25,7 +28,8 @@ def interpretKeyboardInput(levelManager):
             levelManager.springerManager.springState = SpringState.EXTENDED
 
 def mainLoop():
-    pygame.display.set_caption("Springers Simulation")
+    if not HEADLESS_MODE:
+        pygame.display.set_caption("Springers Simulation")
     RUN = True
 
     levelManager.addControllableSpringer(STARTING_HEAD, START_FOOT, ["D", "N", "A"])
@@ -37,23 +41,26 @@ def mainLoop():
 
     while RUN:
 
-        startTime = time.time()
+        if not HEADLESS_MODE:
+            startTime = time.time()
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                RUN = False
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    RUN = False
 
-        interpretKeyboardInput(levelManager)
+            interpretKeyboardInput(levelManager)
 
         if not PLAYER_CONTROL:
             BLACK_BOX.iterate()
-        levelManager.iterate()
-        levelManager.draw()
 
-        endTime = time.time()
-        if endTime - startTime < FRAME_TIME:
-            pygame.time.delay(int((startTime + FRAME_TIME*1000) - endTime))
-        pygame.display.update()
+        levelManager.iterate()
+
+        if not HEADLESS_MODE:
+            levelManager.draw()
+            endTime = time.time()
+            if endTime - startTime < FRAME_TIME:
+                pygame.time.delay(int((startTime + FRAME_TIME*1000) - endTime))
+            pygame.display.update()
 
 
 mainLoop()
