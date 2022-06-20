@@ -1,5 +1,5 @@
 from Managers.DrawManager import DrawManager
-from Utility.Settings import FLOOR_HEIGHT
+from Utility.Settings import FLOOR_HEIGHT, HEADLESS_MODE
 from SpringerModel.Springer import Springer
 from Managers.SpringerManager import SpringerManager
 from SpringerModel.SpringerSprite import SpringerSprite

@@ -10,6 +10,9 @@ TIME_LIMIT = 300
 STARTING_HEAD, START_FOOT = Point(100, 100), Point(50, 200)
 # Poczatkowa pozycja springera zaraz po utworzeniu
 
+HEADLESS_MODE = False
+# Tryb bez okna graficznego
+
 FRAME_TIME = 1/70
 RES_X = 800
 RES_Y = 600
