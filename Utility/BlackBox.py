@@ -1,7 +1,7 @@
 from SpringerModel.Springer import SpringState, WeighBallState
 from Utility.EuclidianFunctions import threePointAngle
 from Utility.Point import Point
-from Utility.Settings import FLOOR_HEIGHT, TIME_LIMIT
+from Utility.Settings import FLOOR_HEIGHT, TIME_LIMIT, MUTATION_CHANCE
 import random as rd
 import copy
 
@@ -48,7 +48,9 @@ class BlackBox:
         n = len(self.springerManager.springerList)
         for springer1 in self.springerManager.springerList[n // 2:]:
             for springer2 in self.springerManager.springerList[n // 2:]:
-                newGenomes.append(self.combineGenomes(springer1.genome, springer2.genome))
+                currGenome = self.combineGenomes(springer1.genome, springer2.genome)
+                currGenome = self.mutate(currGenome)
+                newGenomes.append(currGenome)
             oldGenomes.append(springer1.genome)
 
         self.printGenerationInfo()
@@ -61,6 +63,21 @@ class BlackBox:
     def combineGenomes(self, genome1, genome2):
         genome = [tuple([(genome1[i][j] + genome2[i][j]) / 2 for j in range(len(genome1[i]))]) for i in
                   range(len(genome1))]
+        return genome
+
+    def mutate(self, genome):
+        for i in range(len(genome)):
+            mutatedGene = list(genome[i])
+            oldGene = list(genome[i])
+            if rd.uniform(0, 1) <= MUTATION_CHANCE:
+                mutationType = rd.choice([0,1])
+                if mutationType == 0:
+                    from_to = rd.sample([0, 1, 2], k=2)
+                    mutatedGene[from_to[0]], mutatedGene[from_to[1]] = mutatedGene[from_to[1]], mutatedGene[from_to[0]]
+                else:
+                    mutatedGene[3], mutatedGene[4] = mutatedGene[4], mutatedGene[3]
+            genome[i] = tuple(mutatedGene)
+
         return genome
 
     def getSpringerSuccessMetric(self, springer):
