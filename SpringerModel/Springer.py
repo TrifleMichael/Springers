@@ -67,7 +67,7 @@ class Springer:
     def move(self):
         self.checkGround()
         if self.footLanded and not self.headLanded:
-            self.head.vy += GRAVITY_ACCELERATION # TODO: INCLUDE HOW GRAVITY AFFECTS WEIGHT BALL
+            self.head.vy += GRAVITY_ACCELERATION
             self.moveHeadAroundFoot()
         if not self.footLanded and self.headLanded:
             self.foot.vy += GRAVITY_ACCELERATION
@@ -127,9 +127,12 @@ class Springer:
 
     def moveHeadAroundFoot(self):
         alpha = threePointAngle(self.head + self.head.getSpeedVector(), self.foot, self.head)
+        alpha = self.adjustAlphaByWeightBall(alpha)
         newHead = rotatePointAroundPoint(self.head, self.foot, alpha)
-        self.head.x = newHead.x
-        self.head.y = newHead.y
+        test = (RES_Y - FLOOR_HEIGHT)
+        if not newHead.y - (RES_Y - FLOOR_HEIGHT) >= COLLISION_EPSILON:
+            self.head.x = newHead.x
+            self.head.y = newHead.y
 
     def transferHeadMomentumWhenFootLands(self):
         alpha = threePointAngle(self.head.getSpeedVector(), Point(0, 0), (self.foot - self.head).getNormalVector())
@@ -140,9 +143,11 @@ class Springer:
 
     def moveFootAroundHead(self):
         alpha = threePointAngle(self.foot + self.foot.getSpeedVector(), self.head, self.foot)
+        alpha = self.adjustAlphaByWeightBall(alpha)
         newFoot = rotatePointAroundPoint(self.foot, self.head, alpha)
-        self.foot.x = newFoot.x
-        self.foot.y = newFoot.y
+        if not newFoot.y - (RES_Y - FLOOR_HEIGHT) >= COLLISION_EPSILON:
+            self.foot.x = newFoot.x
+            self.foot.y = newFoot.y
 
     def transferFootMomentumWhenHeadLands(self):
         alpha = threePointAngle(self.foot.getSpeedVector(), Point(0, 0), (self.head - self.foot).getNormalVector())
@@ -150,3 +155,11 @@ class Springer:
         newSpeedVector = newSpeedVector.changeLength(abs(self.foot.getSpeedVector()) * sin(alpha))
         self.foot.vx = newSpeedVector.x
         self.foot.vy = newSpeedVector.y
+
+    def adjustAlphaByWeightBall(self, alpha):
+        degreesPerFrame = 0.5
+        if self.weightBallState == WeighBallState.LEFT:
+            alpha -= degreesPerFrame * pi / 180
+        elif self.weightBallState == WeighBallState.RIGHT:
+            alpha += degreesPerFrame * pi / 180
+        return alpha
