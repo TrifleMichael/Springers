@@ -1,7 +1,7 @@
 from SpringerModel.Springer import SpringState, WeighBallState
 from Utility.EuclidianFunctions import threePointAngle
 from Utility.Point import Point
-from Utility.Settings import FLOOR_HEIGHT, TIME_LIMIT, MUTATION_CHANCE
+from Utility.Settings import FLOOR_HEIGHT, TIME_LIMIT, MUTATION_CHANCE, MAX_MUTATION
 import random as rd
 import copy
 
@@ -68,14 +68,28 @@ class BlackBox:
     def mutate(self, genome):
         for i in range(len(genome)):
             mutatedGene = list(genome[i])
-            oldGene = list(genome[i])
             if rd.uniform(0, 1) <= MUTATION_CHANCE:
                 mutationType = rd.choice([0,1])
                 if mutationType == 0:
-                    from_to = rd.sample([0, 1, 2], k=2)
-                    mutatedGene[from_to[0]], mutatedGene[from_to[1]] = mutatedGene[from_to[1]], mutatedGene[from_to[0]]
+                    chooseFrom = [0, 1, 2]
+                    fromIndex = rd.choice(chooseFrom)
+                    chooseFrom.remove(fromIndex)
+                    change = rd.uniform(0, MAX_MUTATION)
+                    if mutatedGene[fromIndex] >= change:
+                        otherIndex = rd.choice(chooseFrom)
+                        if mutatedGene[otherIndex]+change<=10:
+                            mutatedGene[fromIndex]-=change
+                            mutatedGene[otherIndex]+=change
                 else:
-                    mutatedGene[3], mutatedGene[4] = mutatedGene[4], mutatedGene[3]
+                    fromIndex = rd.choice([3, 4])
+                    change = rd.uniform(0, MAX_MUTATION)
+                    if fromIndex == 3:
+                        otherIndex = 4
+                    else:
+                        otherIndex = 3
+                    if mutatedGene[fromIndex] >= change and mutatedGene[otherIndex]+change<=10:
+                        mutatedGene[fromIndex] -= change
+                        mutatedGene[otherIndex] += change
             genome[i] = tuple(mutatedGene)
 
         return genome
