@@ -50,8 +50,8 @@ class BlackBox:
         oldGenomes = []
         self.springerManager.springerList.sort(key=self.getSpringerSuccessMetric)
         n = len(self.springerManager.springerList)
-        for springer1 in self.springerManager.springerList[n // 2:]:
-            for springer2 in self.springerManager.springerList[n // 2:]:
+        for springer1 in self.springerManager.springerList[n-1: 3*n//4: -1]:
+            for springer2 in self.springerManager.springerList[n-1: 3*n//4: -1]:
                 currGenome = self.combineGenomes(springer1.genome, springer2.genome)
                 currGenome = self.mutate(currGenome)
                 newGenomes.append(currGenome)
@@ -59,7 +59,7 @@ class BlackBox:
         newGenomes = newGenomes[:SPRINGERS_PER_GENERATION]
 
         self.printGenerationInfo()
-        self.saveIfBestGeneration(oldGenomes, self.getSpringerSuccessMetric(self.springerManager.springerList[0]))
+        self.saveIfBestGeneration(oldGenomes, self.getAverageMetric())
         self.deleteOldSpringers()
         for genome in newGenomes:
             self.levelManager.addControllableSpringer(getStartHead(), getStartFoot(), genome)
@@ -69,6 +69,12 @@ class BlackBox:
         genome = [[tuple([(genome1[k][i][j] + genome2[k][i][j]) / 2 for j in range(len(genome1[k][i]))]) for i in
                   range(len(genome1[k]))] for k in range(len(genome1))]
         return genome
+
+    def getAverageMetric(self):
+        metric = 0
+        for springer in self.springerManager.springerList:
+            metric += self.getSpringerSuccessMetric(springer)
+        return metric / len(self.springerManager.springerList)
 
     def mutate(self, genome):
         for i in range(len(genome)):
@@ -101,7 +107,7 @@ class BlackBox:
         return genome
 
     def getSpringerSuccessMetric(self, springer):
-        return springer.head.x ** 2
+        return springer.head.x
 
     def deleteOldSpringers(self):
         self.springerManager.springerList = []

@@ -32,3 +32,8 @@ def showBestGeneration(levelManager, BLACK_BOX, DISPLAY, prompt = True):
         if endTime - startTime < FRAME_TIME:
             pygame.time.delay(int((startTime + FRAME_TIME * 1000) - endTime))
         pygame.display.update()
+
+    maxDist = 0
+    for springer in levelManager.springerManager.springerList:
+        maxDist = max(springer.head.x, maxDist)
+    print("Max distance for this generation: ", maxDist)

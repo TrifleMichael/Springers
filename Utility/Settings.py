@@ -7,7 +7,7 @@ TIME_LIMIT = 200
 # Ile klatek ma trwac jedna generacja Springerow.
 # Po tym czasie powinno dochodzic do rekombinacji genomu i utworzenia nowych Springerow
 
-START_HEAD_COORDS, START_FOOT_COORDS = (100, 100), (50, 200)
+START_HEAD_COORDS, START_FOOT_COORDS = (100, 100), (80, 200)
 # Poczatkowa pozycja springera zaraz po utworzeniu
 
 HEADLESS_MODE = True
@@ -17,9 +17,9 @@ MAX_GENERATION = 100
 # Wyswietla najlepsza generacje po zadanej liczbie generacji. W przypadku kiedy jest None symulacja sie nie konczy.
 
 
-SPRINGERS_PER_GENERATION = 30
+SPRINGERS_PER_GENERATION = 60
 FRAME_TIME = 1/70
-RES_X = 800
+RES_X = 1200
 RES_Y = 600
 GRAVITY_ACCELERATION = 0.1
 COLLISION_EPSILON = 3
