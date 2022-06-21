@@ -7,7 +7,7 @@ from SpringerModel.Springer import WeighBallState, SpringState
 from Utility.BlackBox import BlackBox
 from Utility.Settings import *
 from Utility.ShowBestGeneration import showBestGeneration
-from Utility.UtilityFunctions import getStartFoot, getStartHead, createRandomGenomeSpringers
+from Utility.UtilityFunctions import getStartFoot, getStartHead, createRandomGenomeSpringers, getRandomGenome
 
 if not HEADLESS_MODE:
     DISPLAY = pygame.display.set_mode((RES_X, RES_Y))
@@ -34,12 +34,10 @@ def mainLoop():
     if not HEADLESS_MODE:
         pygame.display.set_caption("Springers Simulation")
     RUN = True
-    createRandomGenomeSpringers(SPRINGERS_PER_GENERATION, levelManager)
-    # Przykladowy springer ktory moze byc kontrolowany przez gracza
-    # Chyba ze PLAYER_CONTROL jest wylaczone w ustawieniach, wtedy zarzada nim BLACK_BOX
-    # Mozna je tworzyc w petli i moga wspoldzielic pozycje (co najwyzej beda sie zlewaly graficznie)
-    # Tablica DNA to symboliczny genom. Zmieniajcie go jak chcecie.
-    # TODO: Tworzyc wiele Springerow w petli z roznymi genotypami
+    if not PLAYER_CONTROL:
+        createRandomGenomeSpringers(SPRINGERS_PER_GENERATION, levelManager)
+    else:
+        levelManager.addControllableSpringer(getStartHead(), getStartFoot(), getRandomGenome())
 
     while RUN:
 
@@ -64,8 +62,13 @@ def mainLoop():
                 pygame.time.delay(int((startTime + FRAME_TIME*1000) - endTime))
             pygame.display.update()
 
-        if HEADLESS_MODE and BLACK_BOX.generationNumber == MAX_GENERATION:
+        if HEADLESS_MODE and BLACK_BOX.generationNumber == MAX_GENERATION+1:
             RUN = False
-            showBestGeneration(levelManager, BLACK_BOX)
+            DISPLAY = pygame.display.set_mode((RES_X, RES_Y))
+            showBestGeneration(levelManager, BLACK_BOX, DISPLAY)
+            ans = input("Show again? (y/n)\n")
+            while ans == "y":
+                showBestGeneration(levelManager, BLACK_BOX, DISPLAY, prompt=False)
+                ans = input("Show again? (y/n)\n")
 
 mainLoop()

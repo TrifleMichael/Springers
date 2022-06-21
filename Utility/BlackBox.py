@@ -37,9 +37,12 @@ class BlackBox:
 
     def iterate(self):
         self.changeSpringerStates()
-        if self.levelManager.timeFromStart >= TIME_LIMIT:
+        if self.ifTimeToCreateNewGeneration():
             self.generateNewGeneration()
             self.levelManager.timeFromStart = 0
+
+    def ifTimeToCreateNewGeneration(self):
+        return self.levelManager.timeFromStart >= TIME_LIMIT
 
     def generateNewGeneration(self):
         newGenomes = []
@@ -108,6 +111,7 @@ class BlackBox:
             self.bestGenerationMetric = metric
 
     def prepareReplay(self):
+        self.levelManager.timeFromStart = 0
         self.deleteOldSpringers()
         for genome in self.bestGenerationGenomes:
             self.levelManager.addControllableSpringer(getStartHead(), getStartFoot(), genome)
