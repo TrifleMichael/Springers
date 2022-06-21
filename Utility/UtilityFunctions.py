@@ -1,6 +1,6 @@
 from Utility.Point import Point
 from Utility.Settings import START_FOOT_COORDS, START_HEAD_COORDS
-from random import randrange
+from random import randrange, randint
 
 
 def getStartFoot():
@@ -11,7 +11,13 @@ def getStartHead():
     return Point(START_HEAD_COORDS[0], START_HEAD_COORDS[1])
 
 def getRandomGenome():
-    return [[randrange(10) for _ in range(5)] for _ in range(8)]
+    genome = []
+    for _ in range(8):
+        a = randint(0, 10)
+        b = randint(0, 10)
+        c = randint(min(b, 10-b), max(b, 10-b))
+        genome.append([b, c, 10-b-c, a, 10-a])
+    return genome
 
 def createRandomGenomeSpringers(n, levelManager):
     for i in range(n):
