@@ -22,7 +22,8 @@ class BlackBox:
             info = self.getSpringerInfo(springer)
             genome = springer.genome
             angleReactionIndex = int(info.angle / 6.28 * 1000 // 125)
-            a, s, d, q, e = genome[angleReactionIndex]
+            heightReactionIndex = round((1-info.height/500)**3*10)
+            a, s, d, q, e = genome[angleReactionIndex][heightReactionIndex]
             tempList = []
             state = {a: WeighBallState.LEFT, s: WeighBallState.MIDDLE, d: WeighBallState.RIGHT}
             for w in (a, s, d):
