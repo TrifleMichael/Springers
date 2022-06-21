@@ -13,7 +13,7 @@ START_HEAD_COORDS, START_FOOT_COORDS = (100, 100), (50, 200)
 HEADLESS_MODE = True
 # Tryb bez okna graficznego
 
-MAX_GENERATION = 2
+MAX_GENERATION = 5
 # Wyswietla najlepsza generacje po zadanej liczbie generacji. W przypadku kiedy jest None symulacja sie nie konczy.
 
 
