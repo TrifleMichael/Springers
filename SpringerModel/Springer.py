@@ -92,15 +92,17 @@ class Springer:
             self.transferFootMomentumWhenHeadLands()
 
     def shortenSpring(self):
-        if self.springExtended:
+        if self.springExtended and not self.headLanded:
             newFoot = (self.head + self.foot) * 0.5
             newFoot.vx = self.foot.vx
             newFoot.vy = self.foot.vy
             self.foot = newFoot
             self.springExtended = False
+            self.footLanded = False
+            self.checkGround()
 
     def extendSpring(self):
-        if not self.springExtended:
+        if not self.springExtended and not self.headLanded:
             newFoot = self.foot + (self.foot - self.head)
             newFoot.vx = self.foot.vx
             newFoot.vy = self.foot.vy
@@ -132,6 +134,9 @@ class Springer:
         if not newHead.y - (RES_Y - FLOOR_HEIGHT) >= COLLISION_EPSILON:
             self.head.x = newHead.x
             self.head.y = newHead.y
+        else:
+            self.head.vx = 0
+            self.head.vy = 0
 
     def transferHeadMomentumWhenFootLands(self):
         alpha = threePointAngle(self.head.getSpeedVector(), Point(0, 0), (self.foot - self.head).getNormalVector())
@@ -147,6 +152,9 @@ class Springer:
         if not newFoot.y - (RES_Y - FLOOR_HEIGHT) >= COLLISION_EPSILON:
             self.foot.x = newFoot.x
             self.foot.y = newFoot.y
+        else:
+            self.foot.vx = 0
+            self.foot.vy = 0
 
     def transferFootMomentumWhenHeadLands(self):
         alpha = threePointAngle(self.foot.getSpeedVector(), Point(0, 0), (self.head - self.foot).getNormalVector())
