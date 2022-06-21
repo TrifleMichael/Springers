@@ -11,25 +11,21 @@ class BlackBox:
     def __init__(self, springerManager, levelManager):
         self.springerManager = springerManager
         self.levelManager = levelManager
+        self.generationNumber = 1
 
     def changeSpringerStates(self):
         for springer in self.springerManager.springerList:
             info = self.getSpringerInfo(springer)
             genome = springer.genome
-            # TODO: Na podstawie info (informacje o tym obiekcie sa na dole tego pliku) oraz genomu trzeba
-            # TODO: wybrac WeighBallState oraz SpringState do wrzucenia w ponizsza linie
-            # TODO: WeighBallState i SpringState to enumy. Sa opisane u gory Springers.py
             angleReactionIndex = int(info.angle / 6.28 * 1000 // 125)
             a, s, d, q, e = genome[angleReactionIndex]
-            # TODO: Genom moze byc dowolnie zmieniony, nie wykorzystuje go nigdzie indziej.
-            # TODO: Czyli po prostu trzeba zrobic funkcje, ktora na podstawie genomu i aktualnej sytuacji podejmuje decyzje danego springera :)
             tempList = []
             state = {a: WeighBallState.LEFT, s: WeighBallState.MIDDLE, d: WeighBallState.RIGHT}
             for w in (a, s, d):
                 for _ in range(int(w)):
                     tempList.append(state[w])
-            weighBallState = tempList[rd.randint(0, len(tempList)-1)]
-            if q < rd.random()*10:
+            weighBallState = tempList[rd.randint(0, len(tempList) - 1)]
+            if q < rd.random() * 10:
                 springState = SpringState.RETRACTED
             else:
                 springState = SpringState.EXTENDED
@@ -45,20 +41,22 @@ class BlackBox:
         newGenomes = []
         self.springerManager.springerList.sort(key=self.getSpringerSuccessMetric)
         n = len(self.springerManager.springerList)
-        for springer1 in self.springerManager.springerList[n//2:]:
-            for springer2 in self.springerManager.springerList[n//2:]:
+        for springer1 in self.springerManager.springerList[n // 2:]:
+            for springer2 in self.springerManager.springerList[n // 2:]:
                 newGenomes.append(self.combineGenomes(springer1.genome, springer2.genome))
                 # TODO: Dodawac nowe genomy na podstawie genomow powyzszych Springerow (springer1.genome i springer2.genome)
                 # TODO: Jako metryka dopasowania starego genotypu moze przydac sie getSpringerSuccessMetric(), aktualnie to po prostu kwadrat odleglosci przebytej
                 # TODO: Ta funkcja uruchamia sie regularnie co TIME_LIMIT (zdefiniowany w Settings, aktualnie ok 5 sekund).
 
+        self.printGenerationInfo()
         self.deleteOldSpringers()
         for genome in newGenomes:
             self.levelManager.addControllableSpringer(getStartHead(), getStartFoot(), genome)
-        print("RECOMBINING GENOMES")
+        self.generationNumber += 1
 
     def combineGenomes(self, genome1, genome2):
-        genome = [tuple([(genome1[i][j]+genome2[i][j])/2 for j in range(len(genome1[i]))]) for i in range(len(genome1))]
+        genome = [tuple([(genome1[i][j] + genome2[i][j]) / 2 for j in range(len(genome1[i]))]) for i in
+                  range(len(genome1))]
         return genome
 
     def getSpringerSuccessMetric(self, springer):
@@ -81,6 +79,19 @@ class BlackBox:
         height = springer.foot.y - FLOOR_HEIGHT
         timeFromStart = self.levelManager.timeFromStart
         return SpringerInfo(angle, height, timeFromStart)
+
+    def printGenerationInfo(self):
+        averageSuccess = 0
+        bestSuccess = 0
+        for springer in self.springerManager.springerList:
+            averageSuccess += self.getSpringerSuccessMetric(springer)
+            bestSuccess = max(bestSuccess, self.getSpringerSuccessMetric(springer))
+        averageSuccess /= len(self.springerManager.springerList)
+
+        print("----------------------------------")
+        print("Generation ", self.generationNumber)
+        print("Average success metric: ", int(averageSuccess))
+        print("Best success metric: ", int(bestSuccess))
 
 
 class SpringerInfo:
