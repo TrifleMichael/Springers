@@ -34,3 +34,7 @@ class LevelManager:
 
         self.drawManager.addSpringerSprite(springerSprite)
         self.springerManager.addSpringer(springer)
+
+    def updateDisplay(self, display):
+        self.display = display
+        self.drawManager.updateDisplay(display)

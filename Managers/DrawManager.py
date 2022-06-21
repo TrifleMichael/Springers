@@ -21,3 +21,8 @@ class DrawManager:
 
         for springerSprite in self.springerSpriteList:
             springerSprite.draw()
+
+    def updateDisplay(self, display):
+        self.display = display
+        for springerSprite in self.springerSpriteList:
+            springerSprite.display = display

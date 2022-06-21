@@ -3,6 +3,7 @@ from Utility.EuclidianFunctions import threePointAngle
 from Utility.Point import Point
 from Utility.Settings import FLOOR_HEIGHT, TIME_LIMIT
 import random as rd
+import copy
 
 from Utility.UtilityFunctions import getStartHead, getStartFoot
 
@@ -12,6 +13,9 @@ class BlackBox:
         self.springerManager = springerManager
         self.levelManager = levelManager
         self.generationNumber = 1
+
+        self.bestGenerationGenomes = None
+        self.bestGenerationMetric = None
 
     def changeSpringerStates(self):
         for springer in self.springerManager.springerList:
@@ -39,16 +43,16 @@ class BlackBox:
 
     def generateNewGeneration(self):
         newGenomes = []
+        oldGenomes = []
         self.springerManager.springerList.sort(key=self.getSpringerSuccessMetric)
         n = len(self.springerManager.springerList)
         for springer1 in self.springerManager.springerList[n // 2:]:
             for springer2 in self.springerManager.springerList[n // 2:]:
                 newGenomes.append(self.combineGenomes(springer1.genome, springer2.genome))
-                # TODO: Dodawac nowe genomy na podstawie genomow powyzszych Springerow (springer1.genome i springer2.genome)
-                # TODO: Jako metryka dopasowania starego genotypu moze przydac sie getSpringerSuccessMetric(), aktualnie to po prostu kwadrat odleglosci przebytej
-                # TODO: Ta funkcja uruchamia sie regularnie co TIME_LIMIT (zdefiniowany w Settings, aktualnie ok 5 sekund).
+            oldGenomes.append(springer1.genome)
 
         self.printGenerationInfo()
+        self.saveIfBestGeneration(oldGenomes, self.getSpringerSuccessMetric(self.springerManager.springerList[0]))
         self.deleteOldSpringers()
         for genome in newGenomes:
             self.levelManager.addControllableSpringer(getStartHead(), getStartFoot(), genome)
@@ -93,6 +97,19 @@ class BlackBox:
         print("Average success metric: ", int(averageSuccess))
         print("Best success metric: ", int(bestSuccess))
 
+    def saveIfBestGeneration(self, genomes, metric):
+        if self.bestGenerationGenomes is not None:
+            if metric > self.bestGenerationMetric:
+                self.bestGenerationGenomes = copy.deepcopy(genomes)
+                self.bestGenerationMetric = metric
+        else:
+            self.bestGenerationGenomes = copy.deepcopy(genomes)
+            self.bestGenerationMetric = metric
+
+    def prepareReplay(self):
+        self.deleteOldSpringers()
+        for genome in self.bestGenerationGenomes:
+            self.levelManager.addControllableSpringer(getStartHead(), getStartFoot(), genome)
 
 class SpringerInfo:
     def __init__(self, angle, height, timeFromStart):

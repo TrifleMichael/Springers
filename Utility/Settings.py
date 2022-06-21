@@ -1,6 +1,6 @@
 from Utility.Point import Point
 
-PLAYER_CONTROL = False
+PLAYER_CONTROL = True
 # Wybor pomiedzy sterowaniem przez gracza a sterowaniem przez czarna skrzynke
 
 TIME_LIMIT = 200
@@ -12,6 +12,9 @@ START_HEAD_COORDS, START_FOOT_COORDS = (100, 100), (50, 200)
 
 HEADLESS_MODE = False
 # Tryb bez okna graficznego
+
+MAX_GENERATION = 100
+# Wyswietla najlepsza generacje po zadanej liczbie generacji. W przypadku kiedy jest None symulacja sie nie konczy.
 
 FRAME_TIME = 1/70
 RES_X = 800

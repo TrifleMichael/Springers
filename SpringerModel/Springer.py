@@ -1,6 +1,5 @@
 from enum import Enum
 from math import pi, sin
-import random as rd
 
 from Utility.Point import Point
 from Utility.Settings import GRAVITY_ACCELERATION, COLLISION_EPSILON, FLOOR_HEIGHT, RES_Y, BOUNCE_COEFFICIENT

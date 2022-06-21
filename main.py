@@ -6,6 +6,7 @@ from Managers.LevelManager import LevelManager
 from SpringerModel.Springer import WeighBallState, SpringState
 from Utility.BlackBox import BlackBox
 from Utility.Settings import *
+from Utility.ShowBestGeneration import showBestGeneration
 from Utility.UtilityFunctions import getStartFoot, getStartHead
 
 if not HEADLESS_MODE:
@@ -106,5 +107,8 @@ def mainLoop():
                 pygame.time.delay(int((startTime + FRAME_TIME*1000) - endTime))
             pygame.display.update()
 
+        if HEADLESS_MODE and BLACK_BOX.generationNumber == MAX_GENERATION:
+            RUN = False
+            showBestGeneration(levelManager, BLACK_BOX)
 
 mainLoop()
