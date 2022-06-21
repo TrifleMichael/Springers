@@ -51,6 +51,7 @@ class BlackBox:
                 currGenome = self.combineGenomes(springer1.genome, springer2.genome)
                 currGenome = self.mutate(currGenome)
                 newGenomes.append(currGenome)
+                print(currGenome)
             oldGenomes.append(springer1.genome)
 
         self.printGenerationInfo()
@@ -61,15 +62,30 @@ class BlackBox:
         self.generationNumber += 1
 
     def combineGenomes(self, genome1, genome2):
-        genome = [tuple([(genome1[i][j] + genome2[i][j]) / 2 for j in range(len(genome1[i]))]) for i in
-                  range(len(genome1))]
+        # genome = [tuple([(genome1[i][j] + genome2[i][j]) / 2 for j in range(len(genome1[i]))])
+        #           for i in range(len(genome1))]
+
+        genome = []
+        for i in range(len(genome1)):
+            if rd.choice([1, 2]) == 1:
+                currGene = list(genome1[i][:3])
+            else:
+                currGene = list(genome2[i][:3])
+            print(currGene)
+            if rd.choice([1, 2]) == 1:
+                currGene += list(genome1[i][3:5])
+            else:
+                currGene += list(genome2[i][3:5])
+
+            genome.append(tuple(currGene))
+
         return genome
 
     def mutate(self, genome):
         for i in range(len(genome)):
             mutatedGene = list(genome[i])
             if rd.uniform(0, 1) <= MUTATION_CHANCE:
-                mutationType = rd.choice([0,1])
+                mutationType = rd.choice([0, 1])
                 if mutationType == 0:
                     chooseFrom = [0, 1, 2]
                     fromIndex = rd.choice(chooseFrom)
@@ -77,9 +93,9 @@ class BlackBox:
                     change = rd.uniform(0, MAX_MUTATION)
                     if mutatedGene[fromIndex] >= change:
                         otherIndex = rd.choice(chooseFrom)
-                        if mutatedGene[otherIndex]+change<=10:
-                            mutatedGene[fromIndex]-=change
-                            mutatedGene[otherIndex]+=change
+                        if mutatedGene[otherIndex] + change <= 10:
+                            mutatedGene[fromIndex] -= change
+                            mutatedGene[otherIndex] += change
                 else:
                     fromIndex = rd.choice([3, 4])
                     change = rd.uniform(0, MAX_MUTATION)
@@ -87,7 +103,7 @@ class BlackBox:
                         otherIndex = 4
                     else:
                         otherIndex = 3
-                    if mutatedGene[fromIndex] >= change and mutatedGene[otherIndex]+change<=10:
+                    if mutatedGene[fromIndex] >= change and mutatedGene[otherIndex] + change <= 10:
                         mutatedGene[fromIndex] -= change
                         mutatedGene[otherIndex] += change
             genome[i] = tuple(mutatedGene)
@@ -141,6 +157,7 @@ class BlackBox:
         self.deleteOldSpringers()
         for genome in self.bestGenerationGenomes:
             self.levelManager.addControllableSpringer(getStartHead(), getStartFoot(), genome)
+
 
 class SpringerInfo:
     def __init__(self, angle, height, timeFromStart):
