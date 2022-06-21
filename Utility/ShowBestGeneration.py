@@ -5,6 +5,10 @@ from Utility.Settings import RES_X, RES_Y, FRAME_TIME, MAX_GENERATION
 
 
 def showBestGeneration(levelManager, BLACK_BOX):
+
+    print("---------------------------")
+    input("PRESS ENTER TWICE TO START REPLAY")
+
     DISPLAY = pygame.display.set_mode((RES_X, RES_Y))
     REPLAY = True
     BLACK_BOX.prepareReplay()
