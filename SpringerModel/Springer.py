@@ -129,7 +129,6 @@ class Springer:
         alpha = threePointAngle(self.head + self.head.getSpeedVector(), self.foot, self.head)
         alpha = self.adjustAlphaByWeightBall(alpha)
         newHead = rotatePointAroundPoint(self.head, self.foot, alpha)
-        test = (RES_Y - FLOOR_HEIGHT)
         if not newHead.y - (RES_Y - FLOOR_HEIGHT) >= COLLISION_EPSILON:
             self.head.x = newHead.x
             self.head.y = newHead.y
