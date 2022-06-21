@@ -1,7 +1,7 @@
 from SpringerModel.Springer import SpringState, WeighBallState
 from Utility.EuclidianFunctions import threePointAngle
 from Utility.Point import Point
-from Utility.Settings import FLOOR_HEIGHT, TIME_LIMIT
+from Utility.Settings import FLOOR_HEIGHT, TIME_LIMIT, SPRINGERS_PER_GENERATION
 import random as rd
 import copy
 
@@ -50,6 +50,7 @@ class BlackBox:
             for springer2 in self.springerManager.springerList[n // 2:]:
                 newGenomes.append(self.combineGenomes(springer1.genome, springer2.genome))
             oldGenomes.append(springer1.genome)
+        newGenomes = newGenomes[:SPRINGERS_PER_GENERATION]
 
         self.printGenerationInfo()
         self.saveIfBestGeneration(oldGenomes, self.getSpringerSuccessMetric(self.springerManager.springerList[0]))

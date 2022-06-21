@@ -7,7 +7,7 @@ from SpringerModel.Springer import WeighBallState, SpringState
 from Utility.BlackBox import BlackBox
 from Utility.Settings import *
 from Utility.ShowBestGeneration import showBestGeneration
-from Utility.UtilityFunctions import getStartFoot, getStartHead
+from Utility.UtilityFunctions import getStartFoot, getStartHead, createRandomGenomeSpringers
 
 if not HEADLESS_MODE:
     DISPLAY = pygame.display.set_mode((RES_X, RES_Y))
@@ -34,50 +34,7 @@ def mainLoop():
     if not HEADLESS_MODE:
         pygame.display.set_caption("Springers Simulation")
     RUN = True
-    genome1 = [
-        (6, 3, 1, 5, 5),
-        (1, 3, 6, 9, 1),
-        (6, 3, 1, 5, 5),
-        (1, 3, 6, 9, 1),
-        (6, 3, 1, 5, 5),
-        (1, 3, 6, 9, 1),
-        (6, 3, 1, 5, 5),
-        (1, 3, 6, 9, 1)
-        ]
-    genome2 = [
-        (6, 3, 1, 5, 5),
-        (3, 6, 1, 9, 1),
-        (6, 3, 1, 5, 5),
-        (3, 6, 1, 9, 1),
-        (6, 3, 1, 5, 5),
-        (3, 6, 1, 9, 1),
-        (6, 3, 1, 5, 5),
-        (1, 3, 6, 9, 1)
-        ]
-    genome3 = [
-        (6, 3, 1, 5, 5),
-        (6, 1, 3, 9, 1),
-        (6, 2, 2, 5, 5),
-        (7, 2, 1, 9, 1),
-        (6, 3, 1, 5, 5),
-        (3, 7, 0, 9, 1),
-        (6, 3, 1, 5, 5),
-        (1, 3, 6, 9, 1)
-        ]
-    genome4 = [
-        (6, 3, 1, 5, 5),
-        (6, 1, 3, 9, 1),
-        (6, 2, 2, 5, 5),
-        (7, 1, 2, 9, 1),
-        (6, 2, 2, 5, 5),
-        (3, 5, 2, 9, 1),
-        (6, 3, 1, 5, 5),
-        (1, 3, 6, 9, 1)
-        ]
-    levelManager.addControllableSpringer(getStartHead(), getStartFoot(), genome1)
-    levelManager.addControllableSpringer(getStartHead(), getStartFoot(), genome2)
-    levelManager.addControllableSpringer(getStartHead(), getStartFoot(), genome3)
-    levelManager.addControllableSpringer(getStartHead(), getStartFoot(), genome4)
+    createRandomGenomeSpringers(SPRINGERS_PER_GENERATION, levelManager)
     # Przykladowy springer ktory moze byc kontrolowany przez gracza
     # Chyba ze PLAYER_CONTROL jest wylaczone w ustawieniach, wtedy zarzada nim BLACK_BOX
     # Mozna je tworzyc w petli i moga wspoldzielic pozycje (co najwyzej beda sie zlewaly graficznie)
