@@ -1,3 +1,5 @@
+from Utility.Point import Point
+
 PLAYER_CONTROL = False
 # Wybor pomiedzy sterowaniem przez gracza a sterowaniem przez czarna skrzynke
 
@@ -11,7 +13,7 @@ START_HEAD_COORDS, START_FOOT_COORDS = (100, 100), (50, 200)
 HEADLESS_MODE = True
 # Tryb bez okna graficznego
 
-MAX_GENERATION = 20
+MAX_GENERATION = 100
 # Wyswietla najlepsza generacje po zadanej liczbie generacji. W przypadku kiedy jest None symulacja sie nie konczy.
 
 
@@ -23,3 +25,6 @@ GRAVITY_ACCELERATION = 0.1
 COLLISION_EPSILON = 3
 FLOOR_HEIGHT = 100
 BOUNCE_COEFFICIENT = 0.08
+
+MUTATION_CHANCE = 0.3
+MAX_MUTATION = 1.5
