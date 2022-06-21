@@ -16,8 +16,8 @@ def getRandomGenome():
         for _ in range(8):
             a = randint(0, 10)
             b = randint(0, 10)
-            c = randint(min(b, 10-b), max(b, 10-b))
-            row.append([b, c, 10-b-c, a, 10-a])
+            c = randint(0, 10-b)
+            row.append((b, c, 10-b-c, a, 10-a))
     return genome
 
 def createRandomGenomeSpringers(n, levelManager):

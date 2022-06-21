@@ -66,36 +66,37 @@ class BlackBox:
         self.generationNumber += 1
 
     def combineGenomes(self, genome1, genome2):
-        genome = [tuple([(genome1[i][j] + genome2[i][j]) / 2 for j in range(len(genome1[i]))]) for i in
-                  range(len(genome1))]
+        genome = [[tuple([(genome1[k][i][j] + genome2[k][i][j]) / 2 for j in range(len(genome1[k][i]))]) for i in
+                  range(len(genome1[k]))] for k in range(len(genome1))]
         return genome
 
     def mutate(self, genome):
         for i in range(len(genome)):
-            mutatedGene = list(genome[i])
-            if rd.uniform(0, 1) <= MUTATION_CHANCE:
-                mutationType = rd.choice([0,1])
-                if mutationType == 0:
-                    chooseFrom = [0, 1, 2]
-                    fromIndex = rd.choice(chooseFrom)
-                    chooseFrom.remove(fromIndex)
-                    change = rd.uniform(0, MAX_MUTATION)
-                    if mutatedGene[fromIndex] >= change:
-                        otherIndex = rd.choice(chooseFrom)
-                        if mutatedGene[otherIndex]+change<=10:
-                            mutatedGene[fromIndex]-=change
-                            mutatedGene[otherIndex]+=change
-                else:
-                    fromIndex = rd.choice([3, 4])
-                    change = rd.uniform(0, MAX_MUTATION)
-                    if fromIndex == 3:
-                        otherIndex = 4
+            for j in range(len(genome[i])):
+                mutatedGene = list(genome[i][j])
+                if rd.uniform(0, 1) <= MUTATION_CHANCE:
+                    mutationType = rd.choice([0,1])
+                    if mutationType == 0:
+                        chooseFrom = [0, 1, 2]
+                        fromIndex = rd.choice(chooseFrom)
+                        chooseFrom.remove(fromIndex)
+                        change = rd.uniform(0, MAX_MUTATION)
+                        if mutatedGene[fromIndex] >= change:
+                            otherIndex = rd.choice(chooseFrom)
+                            if mutatedGene[otherIndex]+change<=10:
+                                mutatedGene[fromIndex]-=change
+                                mutatedGene[otherIndex]+=change
                     else:
-                        otherIndex = 3
-                    if mutatedGene[fromIndex] >= change and mutatedGene[otherIndex]+change<=10:
-                        mutatedGene[fromIndex] -= change
-                        mutatedGene[otherIndex] += change
-            genome[i] = tuple(mutatedGene)
+                        fromIndex = rd.choice([3, 4])
+                        change = rd.uniform(0, MAX_MUTATION)
+                        if fromIndex == 3:
+                            otherIndex = 4
+                        else:
+                            otherIndex = 3
+                        if mutatedGene[fromIndex] >= change and mutatedGene[otherIndex]+change<=10:
+                            mutatedGene[fromIndex] -= change
+                            mutatedGene[otherIndex] += change
+                genome[i][j] = tuple(mutatedGene)
 
         return genome
 
