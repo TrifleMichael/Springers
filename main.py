@@ -6,6 +6,7 @@ from Managers.LevelManager import LevelManager
 from SpringerModel.Springer import WeighBallState, SpringState
 from Utility.BlackBox import BlackBox
 from Utility.Settings import *
+from Utility.UtilityFunctions import getStartFoot, getStartHead
 
 if not HEADLESS_MODE:
     DISPLAY = pygame.display.set_mode((RES_X, RES_Y))
@@ -72,10 +73,10 @@ def mainLoop():
         (6, 3, 1, 5, 5),
         (1, 3, 6, 9, 1)
         ]
-    levelManager.addControllableSpringer(STARTING_HEAD, START_FOOT, genome1)
-    levelManager.addControllableSpringer(STARTING_HEAD, START_FOOT, genome2)
-    levelManager.addControllableSpringer(STARTING_HEAD, START_FOOT, genome3)
-    levelManager.addControllableSpringer(STARTING_HEAD, START_FOOT, genome4)
+    levelManager.addControllableSpringer(getStartHead(), getStartFoot(), genome1)
+    levelManager.addControllableSpringer(getStartHead(), getStartFoot(), genome2)
+    levelManager.addControllableSpringer(getStartHead(), getStartFoot(), genome3)
+    levelManager.addControllableSpringer(getStartHead(), getStartFoot(), genome4)
     # Przykladowy springer ktory moze byc kontrolowany przez gracza
     # Chyba ze PLAYER_CONTROL jest wylaczone w ustawieniach, wtedy zarzada nim BLACK_BOX
     # Mozna je tworzyc w petli i moga wspoldzielic pozycje (co najwyzej beda sie zlewaly graficznie)

@@ -1,8 +1,10 @@
 from SpringerModel.Springer import SpringState, WeighBallState
 from Utility.EuclidianFunctions import threePointAngle
 from Utility.Point import Point
-from Utility.Settings import FLOOR_HEIGHT, TIME_LIMIT, STARTING_HEAD, START_FOOT
+from Utility.Settings import FLOOR_HEIGHT, TIME_LIMIT
 import random as rd
+
+from Utility.UtilityFunctions import getStartHead, getStartFoot
 
 
 class BlackBox:
@@ -52,7 +54,7 @@ class BlackBox:
 
         self.deleteOldSpringers()
         for genome in newGenomes:
-            self.levelManager.addControllableSpringer(STARTING_HEAD, START_FOOT, genome)
+            self.levelManager.addControllableSpringer(getStartHead(), getStartFoot(), genome)
         print("RECOMBINING GENOMES")
 
     def combineGenomes(self, genome1, genome2):
