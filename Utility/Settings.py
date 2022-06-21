@@ -7,7 +7,7 @@ TIME_LIMIT = 200
 # Ile klatek ma trwac jedna generacja Springerow.
 # Po tym czasie powinno dochodzic do rekombinacji genomu i utworzenia nowych Springerow
 
-START_HEAD_COORDS, START_FOOT_COORDS = (100, 100), (50, 200)
+START_HEAD_COORDS, START_FOOT_COORDS = (100, 100), (100, 200)
 # Poczatkowa pozycja springera zaraz po utworzeniu
 
 HEADLESS_MODE = True
