@@ -11,7 +11,7 @@ def getStartHead():
     return Point(START_HEAD_COORDS[0], START_HEAD_COORDS[1])
 
 def getRandomGenome():
-    return [[randrange(10) for _ in range(5)] for _ in range(8)]
+    return [[randrange(1, 10) for _ in range(5)] for _ in range(8)]
 
 def createRandomGenomeSpringers(n, levelManager):
     for i in range(n):

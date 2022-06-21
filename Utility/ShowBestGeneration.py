@@ -4,12 +4,13 @@ import time
 from Utility.Settings import RES_X, RES_Y, FRAME_TIME, MAX_GENERATION
 
 
-def showBestGeneration(levelManager, BLACK_BOX):
+def showBestGeneration(levelManager, BLACK_BOX, DISPLAY, prompt = True):
 
-    print("---------------------------")
-    input("PRESS ENTER TWICE TO START REPLAY")
+    if prompt:
+        print("---------------------------")
+        input("PRESS ENTER TO START REPLAY")
 
-    DISPLAY = pygame.display.set_mode((RES_X, RES_Y))
+
     REPLAY = True
     BLACK_BOX.prepareReplay()
     levelManager.updateDisplay(DISPLAY)
@@ -18,13 +19,13 @@ def showBestGeneration(levelManager, BLACK_BOX):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                RUN = False
+                REPLAY = False
+
+        if BLACK_BOX.ifTimeToCreateNewGeneration():
+            break
 
         BLACK_BOX.iterate()
         levelManager.iterate()
-
-        if BLACK_BOX.generationNumber == MAX_GENERATION + 1:
-            break
 
         levelManager.draw()
         endTime = time.time()

@@ -66,6 +66,11 @@ def mainLoop():
 
         if HEADLESS_MODE and BLACK_BOX.generationNumber == MAX_GENERATION:
             RUN = False
-            showBestGeneration(levelManager, BLACK_BOX)
+            DISPLAY = pygame.display.set_mode((RES_X, RES_Y))
+            showBestGeneration(levelManager, BLACK_BOX, DISPLAY)
+            ans = input("Show again? (y/n)\n")
+            while ans == "y":
+                showBestGeneration(levelManager, BLACK_BOX, DISPLAY, prompt=False)
+                ans = input("Show again? (y/n)\n")
 
 mainLoop()
