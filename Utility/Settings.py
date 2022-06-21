@@ -3,7 +3,7 @@ from Utility.Point import Point
 PLAYER_CONTROL = False
 # Wybor pomiedzy sterowaniem przez gracza a sterowaniem przez czarna skrzynke
 
-TIME_LIMIT = 200
+TIME_LIMIT = 300
 # Ile klatek ma trwac jedna generacja Springerow.
 # Po tym czasie powinno dochodzic do rekombinacji genomu i utworzenia nowych Springerow
 
