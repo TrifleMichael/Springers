@@ -1,6 +1,6 @@
 from Utility.Point import Point
 
-PLAYER_CONTROL = True
+PLAYER_CONTROL = False
 # Wybor pomiedzy sterowaniem przez gracza a sterowaniem przez czarna skrzynke
 
 TIME_LIMIT = 200
@@ -10,12 +10,14 @@ TIME_LIMIT = 200
 START_HEAD_COORDS, START_FOOT_COORDS = (100, 100), (50, 200)
 # Poczatkowa pozycja springera zaraz po utworzeniu
 
-HEADLESS_MODE = False
+HEADLESS_MODE = True
 # Tryb bez okna graficznego
 
 MAX_GENERATION = 100
 # Wyswietla najlepsza generacje po zadanej liczbie generacji. W przypadku kiedy jest None symulacja sie nie konczy.
 
+
+SPRINGERS_PER_GENERATION = 30
 FRAME_TIME = 1/70
 RES_X = 800
 RES_Y = 600
